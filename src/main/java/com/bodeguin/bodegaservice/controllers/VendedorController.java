@@ -24,19 +24,13 @@ public class VendedorController {
 	@Autowired
 	private VendedorService vendedorService;
 	
-	@Autowired
-	private VendedorDtoToEntity dtoToEntity;
-	
-	@Autowired
-	private VendedorEntityToDto entityToDto;
-	
 	@ApiOperation(value = "Endpoint que devuelve la lista de vendedores")
     @GetMapping(value = "/")
-	public ResponseEntity<List<VendedorDto>> findAll() {
-		ResponseEntity<List<VendedorDto>> response;
+	public ResponseEntity<List<Vendedor>> findAll() {
+		ResponseEntity<List<Vendedor>> response;
 		try {
 			List<Vendedor> vendedores = vendedorService.findAll();
-			response = new ResponseEntity<>(entityToDto.convertEntityToDto(vendedores), HttpStatus.OK);
+			response = new ResponseEntity<>(vendedores, HttpStatus.OK);
 			return response;
 		}catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
