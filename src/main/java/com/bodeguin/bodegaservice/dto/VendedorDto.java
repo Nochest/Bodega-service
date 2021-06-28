@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class VendedorDto {
 	
 	@ApiModelProperty(notes = "Id interno de un vendedor en la base de datos", example = "1")
-	private Integer id;
+	private Long id;
 	
 	@ApiModelProperty(notes = "Nombre del vendedor", example = "Jose")
 	private String nombre;

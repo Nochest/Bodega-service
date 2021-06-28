@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Bodega {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(name = "nombre", length = 40, nullable = false)
 	private String nombre;
 	@Column(name = "descripcion", length = 300,nullable = false)
@@ -35,14 +35,14 @@ public class Bodega {
 	@JoinColumn(name = "vendedor_id")
 	private Vendedor vendedor;
 
-	public Integer getId() {
+	
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-
 	public String getNombre() {
 		return nombre;
 	}

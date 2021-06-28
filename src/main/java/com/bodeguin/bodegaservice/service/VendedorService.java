@@ -1,7 +1,12 @@
 package com.bodeguin.bodegaservice.service;
 
-import com.bodeguin.bodegaservice.entities.Vendedor;
+import java.util.List;
 
-public interface VendedorService extends CrudService<Vendedor, Integer>{
+import com.bodeguin.bodegaservice.dto.CreateVendedorDto;
+import com.bodeguin.bodegaservice.dto.VendedorDto;
 
+public interface VendedorService {
+	VendedorDto getVendedorById(Long id) throws Exception;
+	VendedorDto createVendedor(CreateVendedorDto createVendedorDto) throws Exception;
+	List<VendedorDto> getVendedores() throws Exception;
 }

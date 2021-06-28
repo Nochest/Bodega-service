@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Vendedor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(name = "nombre", length = 40, nullable = false)
 	private String nombre;
 	@Column(name = "dni", length = 8, nullable = false)
@@ -30,10 +30,10 @@ public class Vendedor {
 		this.bodegas = new ArrayList<>();
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getNombre() {

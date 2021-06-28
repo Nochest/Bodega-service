@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class BodegaDto {
 	
 	@ApiModelProperty(notes = "Id interno de una bodega en la base de datos", example = "1")
-	private Integer id;
+	private Long id;
 	
 	@ApiModelProperty(notes = "Nombre de la bodega", example = "Bodega del barrio")
 	private String nombre;

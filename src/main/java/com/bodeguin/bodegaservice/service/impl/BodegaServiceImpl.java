@@ -1,12 +1,16 @@
 package com.bodeguin.bodegaservice.service.impl;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.bodeguin.bodegaservice.dto.BodegaDto;
+import com.bodeguin.bodegaservice.dto.CreateBodegaDto;
 import com.bodeguin.bodegaservice.entities.Bodega;
 import com.bodeguin.bodegaservice.repository.BodegaRepository;
 import com.bodeguin.bodegaservice.service.BodegaService;
@@ -17,36 +21,39 @@ public class BodegaServiceImpl implements BodegaService {
 	@Autowired
 	private BodegaRepository bodegaRepository;
 	
-	@Transactional(readOnly = true)
-	@Override
-	public List<Bodega> findAll() throws Exception {
-		return bodegaRepository.findAll();
-	}
-
-	@Transactional(readOnly = true)
-	@Override
-	public Optional<Bodega> findById(Integer id) throws Exception {
-		return bodegaRepository.findById(id);
-	}
+	private static final ModelMapper modelmapper = new ModelMapper();
 
 	@Override
-	public Bodega save(Bodega t) throws Exception {
-		return bodegaRepository.save(t);
+	public BodegaDto getBodegaById(Long id) throws Exception {
+		return modelmapper.map(getBodegasEntity(id), BodegaDto.class);
 	}
 
+	@Transactional
 	@Override
-	public Bodega update(Bodega t) throws Exception {
-		return bodegaRepository.save(t);
-	}
-
-	@Override
-	public void deleteById(Integer id) throws Exception {
-		bodegaRepository.deleteById(id);
+	public BodegaDto createBodega(CreateBodegaDto createBodegaDto) throws Exception {
+		Bodega bodega = new Bodega();
+		bodega.setNombre(createBodegaDto.getNombre());
+		bodega.setDescripcion(createBodegaDto.getDescripcion());
+		bodega.setDireccion(createBodegaDto.getDireccion());
+		bodega.setRuc(createBodegaDto.getRuc());
+		bodega.setLatitud(createBodegaDto.getLatitud());
+		bodega.setLongitud(createBodegaDto.getLongitud());
+		try {
+			bodega = bodegaRepository.save(bodega);
+		}catch (Exception e) {
+			throw new Exception("Bad request");
+		}
+		return modelmapper.map(getBodegasEntity(bodega.getId()), BodegaDto.class);
 	}
 
 	@Override
-	public void deleteAll() throws Exception {
-		bodegaRepository.deleteAll();
+	public List<BodegaDto> getBodegas() throws Exception {
+		List<Bodega> bodegas = bodegaRepository.findAll();
+		return bodegas.stream().map(bodega -> modelmapper.map(bodega, BodegaDto.class)).collect(Collectors.toList());
 	}
-
+	
+	private Bodega getBodegasEntity(Long id) throws Exception {
+		return bodegaRepository.findById(id).orElseThrow(()-> new Exception("Bad Request"));
+	}
+	
 }
